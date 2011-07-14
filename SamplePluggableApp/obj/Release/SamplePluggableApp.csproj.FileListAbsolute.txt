@@ -1,0 +1,24 @@
+D:\Temp\Plugins\Bin\SamplePluggableApp.exe
+D:\Temp\Plugins\Bin\SamplePluggableApp.pdb
+D:\Temp\Plugins\SamplePluggableApp\obj\Release\ResolveAssemblyReference.cache
+D:\Temp\Plugins\SamplePluggableApp\obj\Release\SamplePluggableApp.Console.resources
+D:\Temp\Plugins\SamplePluggableApp\obj\Release\SamplePluggableApp.MainView.resources
+D:\Temp\Plugins\SamplePluggableApp\obj\Release\SamplePluggableApp.Properties.Resources.resources
+D:\Temp\Plugins\SamplePluggableApp\obj\Release\GenerateResource.read.1.tlog
+D:\Temp\Plugins\SamplePluggableApp\obj\Release\GenerateResource.write.1.tlog
+D:\Temp\Plugins\SamplePluggableApp\obj\Release\SamplePluggableApp.exe
+D:\Temp\Plugins\SamplePluggableApp\obj\Release\SamplePluggableApp.pdb
+D:\Temp\SimplePlugins\SamplePluggableApp\obj\Release\SamplePluggableApp.exe
+D:\Temp\SimplePlugins\SamplePluggableApp\obj\Release\SamplePluggableApp.pdb
+D:\Temp\SimplePlugins\Bin\SamplePluggableApp.exe
+D:\Temp\SimplePlugins\Bin\SamplePluggableApp.pdb
+D:\Temp\SimplePlugins\SamplePluggableApp\obj\Release\ResolveAssemblyReference.cache
+D:\Temp\SimplePlugins\SamplePluggableApp\obj\Release\SamplePluggableApp.Console.resources
+D:\Temp\SimplePlugins\SamplePluggableApp\obj\Release\SamplePluggableApp.MainView.resources
+D:\Temp\SimplePlugins\SamplePluggableApp\obj\Release\SamplePluggableApp.Properties.Resources.resources
+D:\Temp\SimplePlugins\SamplePluggableApp\obj\Release\GenerateResource.read.1.tlog
+D:\Temp\SimplePlugins\SamplePluggableApp\obj\Release\GenerateResource.write.1.tlog
+D:\Temp\SimplePluginsSource v1.0.0.0\SamplePluggableApp\obj\Release\SamplePluggableApp.exe
+D:\Temp\SimplePluginsSource v1.0.0.0\SamplePluggableApp\obj\Release\SamplePluggableApp.pdb
+G:\Harindaka\Temp\SimplePlugins\SimplePlugins\SamplePluggableApp\obj\Release\SamplePluggableApp.exe
+G:\Harindaka\Temp\SimplePlugins\SimplePlugins\SamplePluggableApp\obj\Release\SamplePluggableApp.pdb

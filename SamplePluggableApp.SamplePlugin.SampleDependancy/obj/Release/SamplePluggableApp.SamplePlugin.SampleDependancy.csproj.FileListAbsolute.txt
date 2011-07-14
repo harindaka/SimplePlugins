@@ -1,0 +1,10 @@
+D:\Temp\Plugins\Bin\SamplePluggableApp.SamplePlugin.SampleDependancy.dll
+D:\Temp\Plugins\Bin\SamplePluggableApp.SamplePlugin.SampleDependancy.pdb
+D:\Temp\Plugins\SamplePluggableApp.SamplePlugin.SampleDependancy\obj\Release\ResolveAssemblyReference.cache
+D:\Temp\Plugins\SamplePluggableApp.SamplePlugin.SampleDependancy\obj\Release\SamplePluggableApp.SamplePlugin.SampleDependancy.dll
+D:\Temp\Plugins\SamplePluggableApp.SamplePlugin.SampleDependancy\obj\Release\SamplePluggableApp.SamplePlugin.SampleDependancy.pdb
+D:\Temp\SimplePlugins\Bin\SamplePluggableApp.SamplePlugin.SampleDependancy.dll
+D:\Temp\SimplePlugins\Bin\SamplePluggableApp.SamplePlugin.SampleDependancy.pdb
+D:\Temp\SimplePlugins\SamplePluggableApp.SamplePlugin.SampleDependancy\obj\Release\ResolveAssemblyReference.cache
+D:\Temp\SimplePlugins\SamplePluggableApp.SamplePlugin.SampleDependancy\obj\Release\SamplePluggableApp.SamplePlugin.SampleDependancy.dll
+D:\Temp\SimplePlugins\SamplePluggableApp.SamplePlugin.SampleDependancy\obj\Release\SamplePluggableApp.SamplePlugin.SampleDependancy.pdb

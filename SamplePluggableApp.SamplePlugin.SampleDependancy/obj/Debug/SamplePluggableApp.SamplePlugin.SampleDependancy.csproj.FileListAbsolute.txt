@@ -1,0 +1,7 @@
+D:\Temp\Plugins\SamplePluggableApp.SamplePlugin.SampleDependancy\bin\Debug\SamplePluggableApp.SamplePlugin.SampleDependancy.dll
+D:\Temp\Plugins\SamplePluggableApp.SamplePlugin.SampleDependancy\bin\Debug\SamplePluggableApp.SamplePlugin.SampleDependancy.pdb
+D:\Temp\Plugins\SamplePluggableApp.SamplePlugin.SampleDependancy\obj\Debug\ResolveAssemblyReference.cache
+D:\Temp\Plugins\SamplePluggableApp.SamplePlugin.SampleDependancy\obj\Debug\SamplePluggableApp.SamplePlugin.SampleDependancy.dll
+D:\Temp\Plugins\SamplePluggableApp.SamplePlugin.SampleDependancy\obj\Debug\SamplePluggableApp.SamplePlugin.SampleDependancy.pdb
+D:\Temp\Plugins\Bin\SamplePluggableApp.SamplePlugin.SampleDependancy.dll
+D:\Temp\Plugins\Bin\SamplePluggableApp.SamplePlugin.SampleDependancy.pdb

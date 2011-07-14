@@ -1,0 +1,12 @@
+D:\Temp\Pathfinder\Bin\Plugins.Tester.exe.config
+D:\Temp\Pathfinder\Bin\Plugins.Tester.exe
+D:\Temp\Pathfinder\Bin\Plugins.Tester.pdb
+D:\Temp\Pathfinder\Pathfinder\obj\Debug\ResolveAssemblyReference.cache
+D:\Temp\Pathfinder\Pathfinder\obj\Debug\Plugins.Tester.MainView.resources
+D:\Temp\Pathfinder\Pathfinder\obj\Debug\Plugins.Tester.Properties.Resources.resources
+D:\Temp\Pathfinder\Pathfinder\obj\Debug\GenerateResource.read.1.tlog
+D:\Temp\Pathfinder\Pathfinder\obj\Debug\ResGen.read.1.tlog
+D:\Temp\Pathfinder\Pathfinder\obj\Debug\GenerateResource.write.1.tlog
+D:\Temp\Pathfinder\Pathfinder\obj\Debug\ResGen.write.1.tlog
+D:\Temp\Pathfinder\Pathfinder\obj\Debug\Plugins.Tester.exe
+D:\Temp\Pathfinder\Pathfinder\obj\Debug\Plugins.Tester.pdb

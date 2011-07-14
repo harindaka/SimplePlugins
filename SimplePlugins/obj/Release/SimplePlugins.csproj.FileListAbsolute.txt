@@ -1,0 +1,10 @@
+D:\Temp\Plugins\Plugins\bin\Release\SimplePlugins.dll
+D:\Temp\Plugins\Plugins\bin\Release\SimplePlugins.pdb
+D:\Temp\Plugins\Plugins\obj\Release\ResolveAssemblyReference.cache
+D:\Temp\Plugins\Plugins\obj\Release\SimplePlugins.dll
+D:\Temp\Plugins\Plugins\obj\Release\SimplePlugins.pdb
+D:\Temp\SimplePlugins\SimplePlugins\obj\Release\ResolveAssemblyReference.cache
+D:\Temp\SimplePlugins\SimplePlugins\obj\Release\SimplePlugins.dll
+D:\Temp\SimplePlugins\SimplePlugins\obj\Release\SimplePlugins.pdb
+D:\Temp\SimplePlugins\SimplePlugins\bin\Release\SimplePlugins.dll
+D:\Temp\SimplePlugins\SimplePlugins\bin\Release\SimplePlugins.pdb
