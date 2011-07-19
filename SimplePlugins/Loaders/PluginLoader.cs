@@ -93,10 +93,10 @@ namespace SimplePlugins.Loaders
             return this.LoadedPlugin.Main(args);
         }
 
-        protected override void OnUnloadNotification()
+        protected override void OnAbort()
         {
             if (this.LoadedPlugin != null)
-                this.LoadedPlugin.OnUnloadNotification();
+                this.LoadedPlugin.OnAbort(null);
         }
 
         Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)

@@ -37,9 +37,8 @@
             // 
             // lbPlugins
             // 
-            this.lbPlugins.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lbPlugins.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.lbPlugins.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lbPlugins.FormattingEnabled = true;
             this.lbPlugins.HorizontalScrollbar = true;
@@ -71,9 +70,9 @@
             // 
             // cslConsole
             // 
-            this.cslConsole.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.cslConsole.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.cslConsole.Location = new System.Drawing.Point(10, 143);
             this.cslConsole.Name = "cslConsole";
             this.cslConsole.Size = new System.Drawing.Size(531, 254);

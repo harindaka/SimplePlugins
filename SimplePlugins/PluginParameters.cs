@@ -18,10 +18,14 @@ namespace SimplePlugins
         private Dictionary<string, object> _parameters { get; set; }
 
         public int Count { get { return _parameters.Count; } }
+        
+        internal PluginException PluginException { get; set; }
 
-        public bool ExecutionDenied { get; internal set; }
-
-        public PluginException UnhandledException { get; internal set; }
+        public static bool IsSerializeable(object serializeableObject)
+        {
+            Type objType = serializeableObject.GetType();
+            return (objType.IsPrimitive || objType.IsSerializable);
+        }
 
         public object Get(string parameterName)
         {
@@ -34,7 +38,7 @@ namespace SimplePlugins
         public void Set(string parameterName, object serializeableObject)
         {
             Type paramType = serializeableObject.GetType();
-            if (paramType.IsPrimitive || paramType.IsSerializable)
+            if (PluginParameters.IsSerializeable(serializeableObject))
             {
                 if (_parameters.ContainsKey(parameterName))
                     _parameters[parameterName] = serializeableObject;
@@ -43,7 +47,7 @@ namespace SimplePlugins
             }
             else
                 throw new InvalidPluginParameterException(parameterName);
-        }
+        }        
         
         public bool Contains(string parameterName)
         {
@@ -68,7 +72,7 @@ namespace SimplePlugins
         public void Add(string parameterName, object serializeableObject)
         {
             Type paramType = serializeableObject.GetType();
-            if (paramType.IsPrimitive || paramType.IsSerializable)
+            if (PluginParameters.IsSerializeable(serializeableObject))
                 this._parameters.Add(parameterName, serializeableObject);
             else
                 throw new InvalidPluginParameterException(parameterName);

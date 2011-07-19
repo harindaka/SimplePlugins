@@ -9,54 +9,13 @@ using System.ComponentModel;
 using System.Collections.Generic;
 using SimplePlugins.Exceptions;
 using System.Collections.ObjectModel;
+using System.Windows.Forms;
 
 namespace SimplePlugins.Loaders
 {
     [Serializable]
     public abstract class PluginLoaderBase : MarshalByRefObject
     {
-        [Serializable]
-        public class PluginLoadedEventArgs : EventArgs
-        {
-            public PluginLoadedEventArgs(PluginInfo info)
-                : base()
-            {
-                this.Info = info;
-            }
-
-            public PluginInfo Info
-            {
-                get;
-                private set;
-            }
-        }
-
-        [Serializable]
-        public class PluginUnloadedEventArgs : EventArgs
-        {
-            public PluginUnloadedEventArgs(PluginInfo info, PluginParameters results)
-                : base()
-            {
-                this.Info = info;
-                if (results == null)
-                    this.Results = new PluginParameters();
-                else
-                    this.Results = results;
-            }
-
-            public PluginInfo Info
-            {
-                get;
-                private set;
-            }
-
-            public PluginParameters Results
-            {
-                get;
-                private set;
-            }
-        }
-
         [Serializable]
         public class ProbeCompleteEventArgs : EventArgs
         {
@@ -98,44 +57,120 @@ namespace SimplePlugins.Loaders
 
             public bool Cancel { get; set; }
         }
-        
+
+        public class PluginExecutingEventArgs : EventArgs
+        {
+            public PluginExecutingEventArgs(PluginInfo info)
+                : base()
+            {
+                this.Info = info;
+            }
+
+            public PluginInfo Info
+            {
+                get;
+                private set;
+            }
+
+            public bool Cancel { get; set; }
+
+            public object CancelReason { get; set; }
+        }
+
+        [Serializable]
+        public class PluginLoadedEventArgs : EventArgs
+        {
+            public PluginLoadedEventArgs(PluginInfo info)
+                : base()
+            {
+                this.Info = info;
+            }
+
+            public PluginInfo Info
+            {
+                get;
+                private set;
+            }
+        }
+
+        public class PluginUnloadedEventArgs : EventArgs
+        {
+            public PluginUnloadedEventArgs(PluginInfo info, PluginParameters results, bool execCancelled, object execCancelledReason)
+                : base()
+            {
+                this.Info = info;
+                if (results == null)
+                    this.Results = new PluginParameters();
+                else
+                    this.Results = results;
+
+                this.ExecutionCancelled = execCancelled;
+                if (execCancelled)
+                    this.ExecutionCancelledReason = execCancelledReason;
+                else
+                    this.PluginException = results.PluginException;
+            }
+
+            public PluginInfo Info
+            {
+                get;
+                private set;
+            }
+
+            public PluginParameters Results
+            {
+                get;
+                private set;
+            }
+
+            public bool ExecutionCancelled { get; private set; }
+
+            public object ExecutionCancelledReason { get; private set; }
+
+            public PluginException PluginException { get; private set; }
+        }
+
+        public delegate void ProbeCompleteEventHandler(object sender, ProbeCompleteEventArgs e);
         public delegate void PluginLoadingEventHandler(object sender, PluginLoadingEventArgs e);
         public delegate void PluginLoadedEventHandler(object sender, PluginLoadedEventArgs e);
+        public delegate void PluginExecutingEventHandler(object sender, PluginExecutingEventArgs e);
         public delegate void PluginUnloadedEventHandler(object sender, PluginUnloadedEventArgs e);
-        public delegate void ProbeCompleteEventHandler(object sender, ProbeCompleteEventArgs e);
-        
+
+        public event ProbeCompleteEventHandler ProbeComplete;
         public event PluginLoadingEventHandler PluginLoading;
         public event PluginLoadedEventHandler PluginLoaded;
+        public event PluginExecutingEventHandler PluginExecuting;
         public event PluginUnloadedEventHandler PluginUnloaded;
-        public event ProbeCompleteEventHandler ProbeComplete;
-        
-        private PluginBase _loadedPlugin;
-        private PluginInfoList _loadedInfoList;
+
+        private PluginBase _currentPlugin;
+        private PluginInfoList _currentInfoList;
+        private Exception _winAppException;
 
         protected abstract PluginInfoList OnProbe(string pluginFolderPath, SearchOption scanDeapth);
         protected abstract PluginInfo OnGetInfo(string assemblyFileName);
         protected abstract PluginInfo OnLoad(string assemblyFileName);
         protected abstract PluginParameters OnExecute(PluginParameters args);
-        protected abstract void OnUnloadNotification();
+        protected abstract void OnAbort();
 
         protected PluginLoaderBase()
         {
             this.IsPluginLoaded = false;
             this.EventsEnabled = true;
 
-            _loadedInfoList = new PluginInfoList();
+            _currentInfoList = new PluginInfoList();
             this.AssemblyResolutionPaths = new List<string>();
 
             this.ShadowCopyEnabled = false;
+            this.UseDefaultExecutionValidation = true;
         }
 
         protected PluginBase LoadedPlugin
         {
-            get { return _loadedPlugin; }
+            get { return _currentPlugin; }
             set
             {
                 this.IsPluginLoaded = (value != null);
-                _loadedPlugin = value;
+                _currentPlugin = value;
             }
         }
 
@@ -147,17 +182,20 @@ namespace SimplePlugins.Loaders
 
         public bool ShadowCopyEnabled { get; set; }
 
+        public bool UseDefaultExecutionValidation { get; set; }
+
         public ReadOnlyCollection<PluginInfo> LoadedPlugins
         {
-            get { return new ReadOnlyCollection<PluginInfo>(this._loadedInfoList); }
+            get { return new ReadOnlyCollection<PluginInfo>(this._currentInfoList); }
         }
 
         protected virtual void OnPluginLoading(PluginLoadingEventArgs e)
         {
             if (this.EventsEnabled)
             {
-                if (this.PluginLoading != null)
-                    this.PluginLoading(this, e);
+                var evnt = this.PluginLoading;
+                if (evnt != null)
+                    evnt(this, e);
             }
         }
 
@@ -165,8 +203,19 @@ namespace SimplePlugins.Loaders
         {
             if (this.EventsEnabled)
             {
-                if (this.PluginLoaded != null)
-                    this.PluginLoaded(this, e);
+                var evnt = this.PluginLoaded;
+                if (evnt != null)
+                    evnt(this, e);
+            }
+        }
+
+        protected virtual void OnPluginExecuting(PluginExecutingEventArgs e)
+        {
+            if (this.EventsEnabled)
+            {
+                var evnt = this.PluginExecuting;
+                if (evnt != null)
+                    evnt(this, e);
             }
         }
 
@@ -174,8 +223,9 @@ namespace SimplePlugins.Loaders
         {
             if (this.EventsEnabled)
             {
-                if (this.PluginUnloaded != null)
-                    this.PluginUnloaded(this, e);
+                var evnt = this.PluginUnloaded;
+                if (evnt != null)
+                    evnt(this, e);
             }
         }
 
@@ -183,11 +233,12 @@ namespace SimplePlugins.Loaders
         {
             if (this.EventsEnabled)
             {
-                if (this.ProbeComplete != null)
-                    this.ProbeComplete(this, e);
+                var evnt = this.ProbeComplete;
+                if (evnt != null)
+                    evnt(this, e);
             }
         }
-                
+
         public virtual PluginInfoList Probe(string pluginFolderPath, SearchOption scanDeapth)
         {
             AppDomain domain = null;
@@ -258,7 +309,7 @@ namespace SimplePlugins.Loaders
                 if (atts.Length > 0)
                     productName = atts[0].Product;
             }
-            
+
             if (String.IsNullOrEmpty(productName))
                 domainSetup.ApplicationName = Path.GetFileNameWithoutExtension(entryAsm.Location);
             else
@@ -271,7 +322,7 @@ namespace SimplePlugins.Loaders
             if (this.ShadowCopyEnabled)
             {
                 domainSetup.ShadowCopyFiles = "true";
-                domainSetup.ShadowCopyDirectories = Path.GetDirectoryName(assemblyFileName) + ";" + Path.Combine(Path.GetDirectoryName(assemblyFileName), "bin");                
+                domainSetup.ShadowCopyDirectories = Path.GetDirectoryName(assemblyFileName) + ";" + Path.Combine(Path.GetDirectoryName(assemblyFileName), "bin");
             }
 
             PluginLoadingEventArgs loadingArgs = new PluginLoadingEventArgs(assemblyFileName, domainSetup);
@@ -295,41 +346,50 @@ namespace SimplePlugins.Loaders
                     if (loader.IsPluginLoaded)
                     {
                         info.Domain = domain;
-                        this._loadedInfoList.Add(info);
+                        this._currentInfoList.Add(info);
 
                         PluginLoadedEventArgs pluginLoadedArgs = new PluginLoadedEventArgs(info);
                         this.OnPluginLoaded(pluginLoadedArgs);
 
                         PluginBase.ExecutionModes execMode = info.ExecutionMode;
                         bool canExecute = false;
-                        if (execMode == PluginBase.ExecutionModes.AsynchronousMultiInstance || execMode == PluginBase.ExecutionModes.SynchronousMultiInstance)
+
+                        if (!this.UseDefaultExecutionValidation)
                             canExecute = true;
-                        else if (execMode == PluginBase.ExecutionModes.AsynchronousExclusive || execMode == PluginBase.ExecutionModes.SynchronousExclusive)
+                        else if (execMode == PluginBase.ExecutionModes.MultiInstance)
+                            canExecute = true;
+                        else if (execMode == PluginBase.ExecutionModes.Exclusive)
                         {
-                            if (this._loadedInfoList.Count == 1)
+                            if (this._currentInfoList.Count == 1)
                                 canExecute = true;
                         }
-                        else if (execMode == PluginBase.ExecutionModes.AsynchronousSingleton || execMode == PluginBase.ExecutionModes.SynchronousSingleton)
+                        else if (execMode == PluginBase.ExecutionModes.Singleton)
                         {
                             if (this.GetLoadedInstances(info.FileName).Count == 1)
                                 canExecute = true;
                         }
+                        else if (execMode == PluginBase.ExecutionModes.Custom)
+                            canExecute = true;
 
                         if (canExecute)
                         {
-                            info.Loader = loader;
                             info.Parameters = args;
+                            PluginExecutingEventArgs exeArgs = new PluginExecutingEventArgs(info);
+                            this.OnPluginExecuting(exeArgs);
 
-                            if (execMode == PluginBase.ExecutionModes.SynchronousSingleton || execMode == PluginBase.ExecutionModes.SynchronousExclusive || execMode == PluginBase.ExecutionModes.SynchronousMultiInstance)
-                                this.SynchronousExecute(info);
+                            if (exeArgs.Cancel)
+                                this.Unload(info, args, true, exeArgs.CancelReason);
                             else
-                                this.AsynchronousExecute(info);
+                            {
+                                info.Loader = loader;
+
+                                Thread pluginThread = new Thread(this.Execute);
+                                pluginThread.IsBackground = true;
+                                pluginThread.Start(info);
+                            }
                         }
                         else
-                        {
-                            args.ExecutionDenied = true;
-                            this.Unload(info, args);
-                        }
+                            this.Unload(info, args, true, null);
                     }
                     else
                         AppDomain.Unload(domain);
@@ -348,47 +408,47 @@ namespace SimplePlugins.Loaders
                 throw new PluginException(ex);
             }
         }
-                
-        private void AsynchronousExecute(PluginInfo info)
-        {
-            Thread t = new Thread(this.SynchronousExecute);
-            t.IsBackground = true;
-            t.Start(info);
-        }        
-        private void SynchronousExecute(object infoObj)
+
+        private void Execute(object infoObj)
         {
             PluginInfo info = (PluginInfo)infoObj;
-
-            bool unloadedAlready = false;
-            PluginParameters results = null;
-            try
-            {
-                results = info.Loader.OnExecuteWrapper(info.Parameters);
-            }
-            catch (ThreadAbortException)
-            {
-                this.Unload(info, null);
-                unloadedAlready = true;
-            }
-
-            if (!unloadedAlready)
-                this.Unload(info, results);
+            PluginParameters results = info.Loader.OnExecuteWrapper(info);
+            this.Unload(info, results, false, null);
         }
-        private PluginParameters OnExecuteWrapper(PluginParameters args)
+        private PluginParameters OnExecuteWrapper(PluginInfo info)
         {
             try
             {
-                return this.OnExecute(args);
+                Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
+                Application.ThreadException += new ThreadExceptionEventHandler(Application_ThreadException);
+
+                PluginParameters results = this.OnExecute(info.Parameters);
+
+                if (_currentPlugin.UnhandledException != null)
+                    throw _currentPlugin.UnhandledException;
+
+                return results;
             }
             catch (ThreadAbortException ex) { throw ex; }
+            catch (PluginException ex)
+            {
+                info.Parameters.PluginException = ex;
+                return info.Parameters;
+            }
             catch (Exception ex)
             {
-                args.UnhandledException = new PluginException(ex);
-                return args;
+                info.Parameters.PluginException = new PluginException(ex);
+                return info.Parameters;
             }
         }
 
-        private void Unload(PluginInfo info, PluginParameters results)
+        void Application_ThreadException(object sender, ThreadExceptionEventArgs e)
+        {
+            _currentPlugin.UnhandledException = new PluginException(e.Exception);
+            Application.ExitThread();
+        }
+
+        private void Unload(PluginInfo info, PluginParameters results, bool execCancelled, object execCancelledReason)
         {
             if (info != null)
             {
@@ -398,48 +458,34 @@ namespace SimplePlugins.Loaders
                 }
                 catch (AppDomainUnloadedException) { }
 
-                this._loadedInfoList.Remove(info);
+                this._currentInfoList.Remove(info);
 
-                PluginUnloadedEventArgs pluginUnloadedArgs = new PluginUnloadedEventArgs(info, results);
+                PluginUnloadedEventArgs pluginUnloadedArgs = new PluginUnloadedEventArgs(info, results, execCancelled, execCancelledReason);
                 this.OnPluginUnloaded(pluginUnloadedArgs);
             }
         }
 
-        public virtual void NotifyUnload(PluginInfo info)
+        public virtual void RequestAbort(PluginInfo info)
         {
-            try
-            {
-                info.Loader.OnUnloadNotificationWrapper();
-            }
-            catch (Exception ex)
-            {
-                throw new PluginException(ex);
-            }
-        }
-        protected void OnUnloadNotificationWrapper()
-        {
-            try
-            {
-                this.OnUnloadNotification();
-            }
-            catch (ThreadAbortException ex) { throw ex; }
-            catch (Exception ex)
-            {
-                throw new PluginException(ex);
-            }
+            info.Loader.OnAbortWrapper();
         }
 
-        public virtual void NotifyUnloadAll()
+        protected void OnAbortWrapper()
         {
-            foreach (PluginInfo info in _loadedInfoList)
+            try
             {
-                try
-                {
-                    Thread notifyThread = new Thread(new ThreadStart(ref info.Loader.OnUnloadNotification));
-                    notifyThread.IsBackground = true;
-                    notifyThread.Start();
-                }
-                catch (PluginException) { }
+                this.OnAbort();
+            }            
+            catch (Exception) { }
+        }
+
+        public virtual void RequestAbortAll()
+        {
+            foreach (PluginInfo info in _currentInfoList)
+            {
+                Thread notifyThread = new Thread(new ThreadStart(info.Loader.OnAbortWrapper));
+                notifyThread.IsBackground = true;
+                notifyThread.Start();
             }
         }
 
@@ -447,10 +493,10 @@ namespace SimplePlugins.Loaders
         {
             PluginInfoList list = new PluginInfoList();
 
-            for (int i = 0; i < this._loadedInfoList.Count; i++)
+            for (int i = 0; i < this._currentInfoList.Count; i++)
             {
-                if (assemblyFileName.Equals(this._loadedInfoList[i].FileName))
-                    list.Add(this._loadedInfoList[i]);
+                if (assemblyFileName.Equals(this._currentInfoList[i].FileName))
+                    list.Add(this._currentInfoList[i]);
             }
 
             return list;

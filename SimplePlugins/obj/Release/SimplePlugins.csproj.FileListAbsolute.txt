@@ -8,3 +8,8 @@ D:\Temp\SimplePlugins\SimplePlugins\obj\Release\SimplePlugins.dll
 D:\Temp\SimplePlugins\SimplePlugins\obj\Release\SimplePlugins.pdb
 D:\Temp\SimplePlugins\SimplePlugins\bin\Release\SimplePlugins.dll
 D:\Temp\SimplePlugins\SimplePlugins\bin\Release\SimplePlugins.pdb
+G:\Harindaka\Temp\SimplePlugins\SimplePlugins\SimplePlugins\bin\Release\SimplePlugins.dll
+G:\Harindaka\Temp\SimplePlugins\SimplePlugins\SimplePlugins\bin\Release\SimplePlugins.pdb
+G:\Harindaka\Temp\SimplePlugins\SimplePlugins\SimplePlugins\obj\Release\ResolveAssemblyReference.cache
+G:\Harindaka\Temp\SimplePlugins\SimplePlugins\SimplePlugins\obj\Release\SimplePlugins.dll
+G:\Harindaka\Temp\SimplePlugins\SimplePlugins\SimplePlugins\obj\Release\SimplePlugins.pdb

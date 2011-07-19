@@ -71,8 +71,10 @@
     </Reference>
     <Reference Include="System.Drawing" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Exceptions\PluginThreadException.cs" />
     <Compile Include="Exceptions\InvalidPluginAssemblyException.cs" />
     <Compile Include="Loaders\PluginLoader.cs" />
     <Compile Include="Exceptions\InvalidPluginParameterException.cs" />

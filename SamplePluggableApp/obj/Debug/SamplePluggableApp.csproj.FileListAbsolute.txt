@@ -30,3 +30,13 @@ D:\Temp\SimplePlugins\SamplePluggableApp\obj\Debug\SamplePluggableApp.MainView.r
 D:\Temp\SimplePlugins\SamplePluggableApp\obj\Debug\SamplePluggableApp.Properties.Resources.resources
 D:\Temp\SimplePlugins\SamplePluggableApp\obj\Debug\GenerateResource.read.1.tlog
 D:\Temp\SimplePlugins\SamplePluggableApp\obj\Debug\GenerateResource.write.1.tlog
+G:\Harindaka\Temp\SimplePlugins\SimplePlugins\SamplePluggableApp\obj\Debug\SamplePluggableApp.exe
+G:\Harindaka\Temp\SimplePlugins\SimplePlugins\SamplePluggableApp\obj\Debug\SamplePluggableApp.pdb
+G:\Harindaka\Temp\SimplePlugins\SimplePlugins\Bin\SamplePluggableApp.exe
+G:\Harindaka\Temp\SimplePlugins\SimplePlugins\Bin\SamplePluggableApp.pdb
+G:\Harindaka\Temp\SimplePlugins\SimplePlugins\SamplePluggableApp\obj\Debug\ResolveAssemblyReference.cache
+G:\Harindaka\Temp\SimplePlugins\SimplePlugins\SamplePluggableApp\obj\Debug\SamplePluggableApp.Console.resources
+G:\Harindaka\Temp\SimplePlugins\SimplePlugins\SamplePluggableApp\obj\Debug\SamplePluggableApp.MainView.resources
+G:\Harindaka\Temp\SimplePlugins\SimplePlugins\SamplePluggableApp\obj\Debug\SamplePluggableApp.Properties.Resources.resources
+G:\Harindaka\Temp\SimplePlugins\SimplePlugins\SamplePluggableApp\obj\Debug\GenerateResource.read.1.tlog
+G:\Harindaka\Temp\SimplePlugins\SimplePlugins\SamplePluggableApp\obj\Debug\GenerateResource.write.1.tlog

@@ -10,6 +10,7 @@ using SimplePlugins;
 using SimplePlugins.Exceptions;
 using SamplePluggableApp.SamplePlugin.SampleDependancy;
 using System.Configuration;
+using System.Threading;
 
 namespace SamplePluggableApp.SamplePlugin
 {
@@ -23,10 +24,12 @@ namespace SamplePluggableApp.SamplePlugin
         private void MainView_Load(object sender, EventArgs e)
         {
             this.Text = Plugin.Current.FriendlyName;
-                        
-            this.lbParameterDisplay.Items.Add("Value of Parameter 1: " + Plugin.Current.Param1);
-            this.lbParameterDisplay.Items.Add("Value of Parameter 2: " + Convert.ToString(Plugin.Current.Param2));
-            this.lbParameterDisplay.Items.Add("Value of Parameter 3: " + Convert.ToString(Plugin.Current.Param3));
+
+            Plugin currentPlugin = (Plugin)PluginBase.Current;
+
+            this.lbParameterDisplay.Items.Add("Value of Parameter 1: " + currentPlugin.Param1);
+            this.lbParameterDisplay.Items.Add("Value of Parameter 2: " + currentPlugin.Param2.ToString());
+            this.lbParameterDisplay.Items.Add("Value of Parameter 3: " + Convert.ToString(currentPlugin.Param3));
         }
 
         private void btnException_Click(object sender, EventArgs e)
@@ -55,6 +58,29 @@ namespace SamplePluggableApp.SamplePlugin
         {
             //Demonstrates how plugins can use their own application configuration file just like a standalone app does
             MessageBox.Show(ConfigurationManager.AppSettings["TestSetting"]);
+        }
+
+        private void btnThreadException_Click(object sender, EventArgs e)
+        {
+            //Demonstrates how plugins can register any additionally created threads and let any unhandled exceptions be handled automatically.
+            //When any unhandled exceptions occur in these managed threads the exceptions are added to PluginBase.UnhandledThreadExceptions list and PluginBase.Abort is called where the threadException argument can be used to access the exception.
+            //It is recommended to abort the plugin process and let it unload normally when thread exceptions occur
+
+            Thread t = Plugin.Current.CreateManagedThread(new ThreadStart(this.DoAsyncWork));
+            t.Start();
+            
+            this.DoWork();
+        }
+
+        private void DoWork()
+        {
+            while (true) { }
+        }
+
+        private void DoAsyncWork()
+        {
+            Thread.Sleep(1000);
+            throw new Exception("This is an exception in a seperate thread");
         }
         
     }

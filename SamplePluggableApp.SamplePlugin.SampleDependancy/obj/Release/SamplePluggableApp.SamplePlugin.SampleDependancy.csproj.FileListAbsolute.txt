@@ -8,3 +8,8 @@ D:\Temp\SimplePlugins\Bin\SamplePluggableApp.SamplePlugin.SampleDependancy.pdb
 D:\Temp\SimplePlugins\SamplePluggableApp.SamplePlugin.SampleDependancy\obj\Release\ResolveAssemblyReference.cache
 D:\Temp\SimplePlugins\SamplePluggableApp.SamplePlugin.SampleDependancy\obj\Release\SamplePluggableApp.SamplePlugin.SampleDependancy.dll
 D:\Temp\SimplePlugins\SamplePluggableApp.SamplePlugin.SampleDependancy\obj\Release\SamplePluggableApp.SamplePlugin.SampleDependancy.pdb
+G:\Harindaka\Temp\SimplePlugins\SimplePlugins\Bin\SamplePluggableApp.SamplePlugin.SampleDependancy.dll
+G:\Harindaka\Temp\SimplePlugins\SimplePlugins\Bin\SamplePluggableApp.SamplePlugin.SampleDependancy.pdb
+G:\Harindaka\Temp\SimplePlugins\SimplePlugins\SamplePluggableApp.SamplePlugin.SampleDependancy\obj\Release\ResolveAssemblyReference.cache
+G:\Harindaka\Temp\SimplePlugins\SimplePlugins\SamplePluggableApp.SamplePlugin.SampleDependancy\obj\Release\SamplePluggableApp.SamplePlugin.SampleDependancy.dll
+G:\Harindaka\Temp\SimplePlugins\SimplePlugins\SamplePluggableApp.SamplePlugin.SampleDependancy\obj\Release\SamplePluggableApp.SamplePlugin.SampleDependancy.pdb

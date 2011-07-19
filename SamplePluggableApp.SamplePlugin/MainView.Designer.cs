@@ -33,6 +33,7 @@
             this.btnException = new System.Windows.Forms.Button();
             this.btnCheckDependancy = new System.Windows.Forms.Button();
             this.btnReadFromConfigFile = new System.Windows.Forms.Button();
+            this.btnThreadException = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // button1
@@ -49,44 +50,55 @@
             this.lbParameterDisplay.FormattingEnabled = true;
             this.lbParameterDisplay.Location = new System.Drawing.Point(12, 12);
             this.lbParameterDisplay.Name = "lbParameterDisplay";
-            this.lbParameterDisplay.Size = new System.Drawing.Size(219, 82);
-            this.lbParameterDisplay.TabIndex = 3;
+            this.lbParameterDisplay.Size = new System.Drawing.Size(324, 82);
+            this.lbParameterDisplay.TabIndex = 0;
             // 
             // btnException
             // 
-            this.btnException.Location = new System.Drawing.Point(237, 12);
+            this.btnException.Location = new System.Drawing.Point(175, 100);
             this.btnException.Name = "btnException";
-            this.btnException.Size = new System.Drawing.Size(159, 23);
-            this.btnException.TabIndex = 4;
+            this.btnException.Size = new System.Drawing.Size(159, 43);
+            this.btnException.TabIndex = 3;
             this.btnException.Text = "Raise Unhandled Exception";
             this.btnException.UseVisualStyleBackColor = true;
             this.btnException.Click += new System.EventHandler(this.btnException_Click);
             // 
             // btnCheckDependancy
             // 
-            this.btnCheckDependancy.Location = new System.Drawing.Point(237, 41);
+            this.btnCheckDependancy.Location = new System.Drawing.Point(12, 100);
             this.btnCheckDependancy.Name = "btnCheckDependancy";
-            this.btnCheckDependancy.Size = new System.Drawing.Size(159, 23);
-            this.btnCheckDependancy.TabIndex = 5;
+            this.btnCheckDependancy.Size = new System.Drawing.Size(159, 43);
+            this.btnCheckDependancy.TabIndex = 1;
             this.btnCheckDependancy.Text = "Check Dependancy";
             this.btnCheckDependancy.UseVisualStyleBackColor = true;
             this.btnCheckDependancy.Click += new System.EventHandler(this.btnCheckDependancy_Click);
             // 
             // btnReadFromConfigFile
             // 
-            this.btnReadFromConfigFile.Location = new System.Drawing.Point(237, 70);
+            this.btnReadFromConfigFile.Location = new System.Drawing.Point(12, 149);
             this.btnReadFromConfigFile.Name = "btnReadFromConfigFile";
-            this.btnReadFromConfigFile.Size = new System.Drawing.Size(159, 23);
-            this.btnReadFromConfigFile.TabIndex = 6;
+            this.btnReadFromConfigFile.Size = new System.Drawing.Size(159, 43);
+            this.btnReadFromConfigFile.TabIndex = 2;
             this.btnReadFromConfigFile.Text = "Read App.Config";
             this.btnReadFromConfigFile.UseVisualStyleBackColor = true;
             this.btnReadFromConfigFile.Click += new System.EventHandler(this.btnReadFromConfigFile_Click);
+            // 
+            // btnThreadException
+            // 
+            this.btnThreadException.Location = new System.Drawing.Point(175, 149);
+            this.btnThreadException.Name = "btnThreadException";
+            this.btnThreadException.Size = new System.Drawing.Size(159, 43);
+            this.btnThreadException.TabIndex = 4;
+            this.btnThreadException.Text = "Raise Unhandled Exception in seperate thread.";
+            this.btnThreadException.UseVisualStyleBackColor = true;
+            this.btnThreadException.Click += new System.EventHandler(this.btnThreadException_Click);
             // 
             // MainView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(412, 113);
+            this.ClientSize = new System.Drawing.Size(346, 203);
+            this.Controls.Add(this.btnThreadException);
             this.Controls.Add(this.btnReadFromConfigFile);
             this.Controls.Add(this.btnCheckDependancy);
             this.Controls.Add(this.btnException);
@@ -104,6 +116,7 @@
         private System.Windows.Forms.Button btnException;
         private System.Windows.Forms.Button btnCheckDependancy;
         private System.Windows.Forms.Button btnReadFromConfigFile;
+        private System.Windows.Forms.Button btnThreadException;
 
     }
 }
