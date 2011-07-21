@@ -144,7 +144,6 @@ namespace SimplePlugins.Loaders
 
         private PluginBase _currentPlugin;
         private PluginInfoList _currentInfoList;
-        private Exception _winAppException;
 
         protected abstract PluginInfoList OnProbe(string pluginFolderPath, SearchOption scanDeapth);
         protected abstract PluginInfo OnGetInfo(string assemblyFileName);

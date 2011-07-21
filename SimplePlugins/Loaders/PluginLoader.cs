@@ -96,7 +96,7 @@ namespace SimplePlugins.Loaders
         protected override void OnAbort()
         {
             if (this.LoadedPlugin != null)
-                this.LoadedPlugin.OnAbort(null);
+                this.LoadedPlugin.OnAbort();
         }
 
         Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)

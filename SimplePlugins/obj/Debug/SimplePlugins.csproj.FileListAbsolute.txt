@@ -13,3 +13,8 @@ G:\Harindaka\Temp\SimplePlugins\SimplePlugins\SimplePlugins\bin\Debug\SimplePlug
 G:\Harindaka\Temp\SimplePlugins\SimplePlugins\SimplePlugins\obj\Debug\ResolveAssemblyReference.cache
 G:\Harindaka\Temp\SimplePlugins\SimplePlugins\SimplePlugins\obj\Debug\SimplePlugins.dll
 G:\Harindaka\Temp\SimplePlugins\SimplePlugins\SimplePlugins\obj\Debug\SimplePlugins.pdb
+D:\Temp\SimplePlugins\SimplePlugins\SimplePlugins\obj\Debug\ResolveAssemblyReference.cache
+D:\Temp\SimplePlugins\SimplePlugins\SimplePlugins\bin\Debug\SimplePlugins.dll
+D:\Temp\SimplePlugins\SimplePlugins\SimplePlugins\bin\Debug\SimplePlugins.pdb
+D:\Temp\SimplePlugins\SimplePlugins\SimplePlugins\obj\Debug\SimplePlugins.dll
+D:\Temp\SimplePlugins\SimplePlugins\SimplePlugins\obj\Debug\SimplePlugins.pdb
