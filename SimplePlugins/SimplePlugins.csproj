@@ -80,6 +80,7 @@
     <Compile Include="Exceptions\InvalidPluginParameterException.cs" />
     <Compile Include="Exceptions\PluginException.cs" />
     <Compile Include="Exceptions\PluginParameterNotFoundException.cs" />
+    <Compile Include="ManagedThread.cs" />
     <Compile Include="PluginParameters.cs" />
     <Compile Include="PluginBase.cs">
       <SubType>Code</SubType>
@@ -88,6 +89,7 @@
     <Compile Include="PluginInfoList.cs" />
     <Compile Include="Loaders\PluginLoaderBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReadOnlyDictionary.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="SimplePlugins.snk" />

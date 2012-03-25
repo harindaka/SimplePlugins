@@ -19,15 +19,12 @@ namespace SimplePlugins
         public PluginBase()
         {
             PluginBase.Current = this;
-            this.UnhandledThreadExceptionsList = new List<Exception>();
-            this.UnhandledThreadExceptions = new ReadOnlyCollection<Exception>(this.UnhandledThreadExceptionsList); 
+            this.ManagedThreads = new ReadOnlyDictionary<object, ManagedThread>();
         }
 
         public Exception UnhandledException { get; internal set; }
 
-        public ReadOnlyCollection<Exception> UnhandledThreadExceptions { get; private set; }
-
-        internal List<Exception> UnhandledThreadExceptionsList { get; private set; }
+        public ReadOnlyDictionary<object, ManagedThread> ManagedThreads { get; private set; }
 
         public static PluginBase Current { get; private set; }
 
@@ -39,17 +36,7 @@ namespace SimplePlugins
 
         public abstract void OnAbort();
 
-        public static void DoEvents()
-        {
-            PluginBase plugin = PluginBase.Current;
-            if (plugin != null)
-            {
-                if (plugin.UnhandledThreadExceptions.Count > 0)
-                    throw new PluginThreadException(plugin.UnhandledThreadExceptions);
-            }
-        }
-
-        public Thread CreateManagedThread(ThreadStart ts)
+        public ManagedThread CreateManagedThread(object threadID, ThreadStart ts)
         {
             Thread t = new Thread(delegate()
             {
@@ -59,14 +46,16 @@ namespace SimplePlugins
                 }
                 catch (Exception ex)
                 {
-                    this.UnhandledThreadExceptionsList.Add(ex);
+                    this.ManagedThreads[threadID].UnhandledException = ex;
                 }
-            }
-            );
-            
-            return t;
+            });
+
+            ManagedThread mt = new ManagedThread(t);
+            this.ManagedThreads.Items.Add(threadID, mt);
+
+            return mt;
         }
-        public Thread CreateManagedThread(ParameterizedThreadStart ts)
+        public ManagedThread CreateManagedThread(object threadID, ParameterizedThreadStart ts)
         {
             Thread t = new Thread(delegate(object arg)
             {
@@ -76,14 +65,16 @@ namespace SimplePlugins
                 }
                 catch (Exception ex)
                 {
-                    this.UnhandledThreadExceptionsList.Add(ex);
+                    this.ManagedThreads[threadID].UnhandledException = ex;
                 }
-            }
-            );
+            });
 
-            return t;
+            ManagedThread mt = new ManagedThread(t);
+            this.ManagedThreads.Items.Add(threadID, mt);
+
+            return mt;
         }
-        public Thread CreateManagedThread(ThreadStart ts, int maxStackSize)
+        public ManagedThread CreateManagedThread(object threadID, ThreadStart ts, int maxStackSize)
         {
             Thread t = new Thread(delegate()
             {
@@ -93,14 +84,17 @@ namespace SimplePlugins
                 }
                 catch (Exception ex)
                 {
-                    this.UnhandledThreadExceptionsList.Add(ex);
+                    this.ManagedThreads[threadID].UnhandledException = ex;
                 }
             }
             , maxStackSize);
 
-            return t;
+            ManagedThread mt = new ManagedThread(t);
+            this.ManagedThreads.Items.Add(threadID, mt);
+
+            return mt;
         }
-        public Thread CreateManagedThread(ParameterizedThreadStart ts, int maxStackSize)
+        public ManagedThread CreateManagedThread(object threadID, ParameterizedThreadStart ts, int maxStackSize)
         {
             Thread t = new Thread(delegate(object arg)
             {
@@ -110,12 +104,15 @@ namespace SimplePlugins
                 }
                 catch (Exception ex)
                 {
-                    this.UnhandledThreadExceptionsList.Add(ex);
+                    this.ManagedThreads[threadID].UnhandledException = ex;
                 }
             }
             , maxStackSize);
 
-            return t;
+            ManagedThread mt = new ManagedThread(t);
+            this.ManagedThreads.Items.Add(threadID, mt);
+
+            return mt;
         }
     }
 }

@@ -63,24 +63,16 @@ namespace SamplePluggableApp.SamplePlugin
         private void btnThreadException_Click(object sender, EventArgs e)
         {
             //Demonstrates how plugins can register any additionally created threads and let any unhandled exceptions be handled automatically.
-            //When any unhandled exceptions occur in these managed threads the exceptions are added to PluginBase.UnhandledThreadExceptions list and PluginBase.Abort is called where the threadException argument can be used to access the exception.
-            //It is recommended to abort the plugin process and let it unload normally when thread exceptions occur
-
-            Thread t = Plugin.Current.CreateManagedThread(new ThreadStart(this.DoAsyncWork));
-            t.Start();
+            //When any unhandled exceptions occur in these managed threads the exceptions will reflect in the ManagedThread.UnhandledException property 
+            //A list of all created ManagedThread objects are available via the PluginBase.ManagedThreads dictionary list
             
-            this.DoWork();
-        }
-
-        private void DoWork()
-        {
-            while (true) { }
+            ManagedThread mt = Plugin.Current.CreateManagedThread(Guid.NewGuid().ToString(), new ThreadStart(this.DoAsyncWork));
+            mt.Thread.Start();
         }
 
         private void DoAsyncWork()
-        {
-            Thread.Sleep(1000);
-            throw new Exception("This is an exception in a seperate thread");
+        {            
+            throw new Exception("This is an exception in a separate thread");
         }
         
     }

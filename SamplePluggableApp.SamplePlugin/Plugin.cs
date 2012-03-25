@@ -48,7 +48,7 @@ namespace SamplePluggableApp.SamplePlugin
                         
             Application.Run(new MainView()); //This starts a new message loop for the plugin window. pluginForm.ShowDialog() may also be used instead. 
                  
-            if(this.UnhandledException == null && this.UnhandledThreadExceptions.Count == 0)
+            if(this.UnhandledException == null)
                 args.Add("ReturnValue", "Success"); // Demonstrates how serializeable/primitive types can be passed back to the pluggable app
             else
                 args.Add("ReturnValue", "Failed");
