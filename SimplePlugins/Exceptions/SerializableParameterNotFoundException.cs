@@ -5,10 +5,10 @@ using System.Text;
 
 namespace SimplePlugins.Exceptions
 {
-    public class InvalidPluginParameterException:Exception
+    public class SerializableParameterNotFoundException:Exception
     {
-        public InvalidPluginParameterException(string parameterName)
-            : base("The specified plugin parameter '" + parameterName + "' is not marked as serializeable.")
+        public SerializableParameterNotFoundException(string parameterName)
+            : base("The specified serializable parameter '" + parameterName + "' was not found.")
         {
             this.ParameterName = parameterName;
         }

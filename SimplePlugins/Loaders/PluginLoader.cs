@@ -80,7 +80,7 @@ namespace SimplePlugins.Loaders
                 else
                 {
                     this.LoadedPlugin = (PluginBase)Activator.CreateInstance(_loadedPluginAssembly.GetType(info.PluginTypeName));
-
+                    
                     return info;
                 }
             }

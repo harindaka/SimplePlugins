@@ -59,7 +59,7 @@
             this.btnException.Name = "btnException";
             this.btnException.Size = new System.Drawing.Size(159, 43);
             this.btnException.TabIndex = 3;
-            this.btnException.Text = "Raise Unhandled Exception";
+            this.btnException.Text = "Raise Unhandled Exception in Main Thread";
             this.btnException.UseVisualStyleBackColor = true;
             this.btnException.Click += new System.EventHandler(this.btnException_Click);
             // 
@@ -89,7 +89,7 @@
             this.btnThreadException.Name = "btnThreadException";
             this.btnThreadException.Size = new System.Drawing.Size(159, 43);
             this.btnThreadException.TabIndex = 4;
-            this.btnThreadException.Text = "Raise Unhandled Exception in seperate thread.";
+            this.btnThreadException.Text = "Raise Unhandled Exception in Managed Thread.";
             this.btnThreadException.UseVisualStyleBackColor = true;
             this.btnThreadException.Click += new System.EventHandler(this.btnThreadException_Click);
             // 

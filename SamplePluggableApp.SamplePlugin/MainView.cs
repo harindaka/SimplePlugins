@@ -30,12 +30,20 @@ namespace SamplePluggableApp.SamplePlugin
             this.lbParameterDisplay.Items.Add("Value of Parameter 1: " + currentPlugin.Param1);
             this.lbParameterDisplay.Items.Add("Value of Parameter 2: " + currentPlugin.Param2.ToString());
             this.lbParameterDisplay.Items.Add("Value of Parameter 3: " + Convert.ToString(currentPlugin.Param3));
+
+            //The PluginBase.ManagedThreadException event can be used to receive notifications when unhandled exceptions occur in managed threads.
+            currentPlugin.ManagedThreadException += new PluginBase.ManagedThreadExceptionHandler(currentPlugin_ManagedThreadException);
+        }
+
+        void currentPlugin_ManagedThreadException(object sender, PluginBase.ManagedThreadExceptionEventArgs e)
+        {
+            MessageBox.Show(e.ManagedThread.UnhandledException.Message);
         }
 
         private void btnException_Click(object sender, EventArgs e)
         {
             //This is to demonstrate how unhandled exceptions are caught by PluginLoaderBase object, wrapped in a serializeable wrapper
-            //and returned to the pluggable application. This ensures that unexpected non-serializeable exceptions do not leak app domains.
+            //and returned to the pluggable application. This ensures that unexpected non-serializable exceptions do not leak app domains.
             try
             {
                 throw new InvalidCastException(); 
@@ -66,8 +74,8 @@ namespace SamplePluggableApp.SamplePlugin
             //When any unhandled exceptions occur in these managed threads the exceptions will reflect in the ManagedThread.UnhandledException property 
             //A list of all created ManagedThread objects are available via the PluginBase.ManagedThreads dictionary list
             
-            ManagedThread mt = Plugin.Current.CreateManagedThread(Guid.NewGuid().ToString(), new ThreadStart(this.DoAsyncWork));
-            mt.Thread.Start();
+            ManagedThread mt = Plugin.Current.CreateManagedThread(new ThreadStart(this.DoAsyncWork));
+            mt.Thread.Start();            
         }
 
         private void DoAsyncWork()

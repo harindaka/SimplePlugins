@@ -14,17 +14,34 @@ namespace SimplePlugins
     [Serializable]
     public abstract class PluginBase
     {
+        public class ManagedThreadExceptionEventArgs : EventArgs
+        {
+            public ManagedThreadExceptionEventArgs(ManagedThread mt)
+                : base()
+            {
+                this.ManagedThread = mt;                
+            }
+
+            public ManagedThread ManagedThread { get; private set; }
+        }
+
+        public delegate void ManagedThreadExceptionHandler(object sender, ManagedThreadExceptionEventArgs e);
+
+        public event ManagedThreadExceptionHandler ManagedThreadException;
+
+        public enum ManagedThreadDeregistrationModes { Never, UponCompletion, UponException, UponSuccess };
+
         public enum ExecutionModes { Singleton, MultiInstance, Exclusive, Custom };
 
         public PluginBase()
         {
             PluginBase.Current = this;
-            this.ManagedThreads = new ReadOnlyDictionary<object, ManagedThread>();
+            this.ManagedThreads = new ReadOnlyDictionary<string, ManagedThread>();
         }
 
         public Exception UnhandledException { get; internal set; }
 
-        public ReadOnlyDictionary<object, ManagedThread> ManagedThreads { get; private set; }
+        public ReadOnlyDictionary<string, ManagedThread> ManagedThreads { get; private set; }
 
         public static PluginBase Current { get; private set; }
 
@@ -36,81 +53,90 @@ namespace SimplePlugins
 
         public abstract void OnAbort();
 
-        public ManagedThread CreateManagedThread(object threadID, ThreadStart ts)
+        protected virtual void OnManagedThreadException(ManagedThreadExceptionEventArgs e)
         {
+            ManagedThreadExceptionHandler evnt = this.ManagedThreadException;
+            if (evnt != null)
+                this.ManagedThreadException(this, e);
+        }
+
+        public ManagedThread CreateManagedThread(ThreadStart ts, ManagedThreadDeregistrationModes deregister = ManagedThreadDeregistrationModes.UponSuccess, string threadID = null, int maxStackSize = 0)
+        {
+            if (String.IsNullOrEmpty(threadID))
+                threadID = Guid.NewGuid().ToString();
+
             Thread t = new Thread(delegate()
             {
                 try
                 {
                     ts();
+
+                    if (deregister == ManagedThreadDeregistrationModes.UponSuccess)
+                        this.ManagedThreads.Items.Remove(threadID);
                 }
                 catch (Exception ex)
                 {
-                    this.ManagedThreads[threadID].UnhandledException = ex;
-                }
-            });
+                    ManagedThread errorThread = this.ManagedThreads[threadID];
+                    errorThread.UnhandledException = ex;
 
-            ManagedThread mt = new ManagedThread(t);
-            this.ManagedThreads.Items.Add(threadID, mt);
+                    this.OnManagedThreadException(new ManagedThreadExceptionEventArgs(errorThread));
+
+                    if (deregister == ManagedThreadDeregistrationModes.UponSuccess)
+                        this.ManagedThreads.Items.Remove(threadID);
+                }
+                finally
+                {
+                    if (deregister == ManagedThreadDeregistrationModes.UponCompletion)
+                        this.ManagedThreads.Items.Remove(threadID);
+                }
+            }, maxStackSize);
+
+            ManagedThread mt = new ManagedThread(t, threadID);
+
+            if (this.ManagedThreads.ContainsKey(threadID))
+                throw new Exception("The specified new managed Thread ID '" + threadID + "' already exists.");
+            else
+                this.ManagedThreads.Items.Add(threadID, mt);
 
             return mt;
         }
-        public ManagedThread CreateManagedThread(object threadID, ParameterizedThreadStart ts)
+        public ManagedThread CreateManagedThread(ParameterizedThreadStart ts, ManagedThreadDeregistrationModes deregister = ManagedThreadDeregistrationModes.UponSuccess, string threadID = null, int maxStackSize = 0)
         {
-            Thread t = new Thread(delegate(object arg)
+            if (String.IsNullOrEmpty(threadID))
+                threadID = Guid.NewGuid().ToString();
+
+            Thread t = new Thread(delegate(object args)
             {
                 try
                 {
-                    ts(arg);
+                    ts(args);
+
+                    if (deregister == ManagedThreadDeregistrationModes.UponSuccess)
+                        this.ManagedThreads.Items.Remove(threadID);
                 }
                 catch (Exception ex)
                 {
-                    this.ManagedThreads[threadID].UnhandledException = ex;
+                    ManagedThread errorThread = this.ManagedThreads[threadID];
+                    errorThread.UnhandledException = ex;
+
+                    this.OnManagedThreadException(new ManagedThreadExceptionEventArgs(errorThread));
+
+                    if (deregister == ManagedThreadDeregistrationModes.UponSuccess)
+                        this.ManagedThreads.Items.Remove(threadID);
                 }
-            });
-
-            ManagedThread mt = new ManagedThread(t);
-            this.ManagedThreads.Items.Add(threadID, mt);
-
-            return mt;
-        }
-        public ManagedThread CreateManagedThread(object threadID, ThreadStart ts, int maxStackSize)
-        {
-            Thread t = new Thread(delegate()
-            {
-                try
+                finally
                 {
-                    ts();
+                    if (deregister == ManagedThreadDeregistrationModes.UponCompletion)
+                        this.ManagedThreads.Items.Remove(threadID);
                 }
-                catch (Exception ex)
-                {
-                    this.ManagedThreads[threadID].UnhandledException = ex;
-                }
-            }
-            , maxStackSize);
+            }, maxStackSize);
 
-            ManagedThread mt = new ManagedThread(t);
-            this.ManagedThreads.Items.Add(threadID, mt);
+            ManagedThread mt = new ManagedThread(t, threadID);
 
-            return mt;
-        }
-        public ManagedThread CreateManagedThread(object threadID, ParameterizedThreadStart ts, int maxStackSize)
-        {
-            Thread t = new Thread(delegate(object arg)
-            {
-                try
-                {
-                    ts(arg);
-                }
-                catch (Exception ex)
-                {
-                    this.ManagedThreads[threadID].UnhandledException = ex;
-                }
-            }
-            , maxStackSize);
-
-            ManagedThread mt = new ManagedThread(t);
-            this.ManagedThreads.Items.Add(threadID, mt);
+            if (this.ManagedThreads.ContainsKey(threadID))
+                throw new Exception("The specified new managed Thread ID '" + threadID + "' already exists.");
+            else
+                this.ManagedThreads.Items.Add(threadID, mt);
 
             return mt;
         }
