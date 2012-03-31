@@ -1,0 +1,5 @@
+D:\Temp\SimplePlugins\SimplePlugins\SimplePlugins.IronPython\obj\Debug\ResolveAssemblyReference.cache
+D:\Temp\SimplePlugins\SimplePlugins\Bin\SimplePlugins.IronPython.dll
+D:\Temp\SimplePlugins\SimplePlugins\Bin\SimplePlugins.IronPython.pdb
+D:\Temp\SimplePlugins\SimplePlugins\SimplePlugins.IronPython\obj\Debug\SimplePlugins.IronPython.dll
+D:\Temp\SimplePlugins\SimplePlugins\SimplePlugins.IronPython\obj\Debug\SimplePlugins.IronPython.pdb

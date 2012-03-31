@@ -13,6 +13,8 @@ namespace SimplePlugins
         {
             this.Thread = t;
             this.ThreadID = threadID;
+
+            this.Thread.IsBackground = true;
         }
 
         public string ThreadID { get; private set; }
