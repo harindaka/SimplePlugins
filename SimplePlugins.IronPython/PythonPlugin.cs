@@ -10,24 +10,24 @@ namespace SimplePlugins
 {
     public class PythonPlugin : PluginBase
     {
-        public PythonPlugin()
-            : base()
+        public PythonPlugin(string fileName)
+            : base(fileName)
         {
             try
-            {
-                string fileName = "";
-
+            {                
                 this.Python = IronPython.Hosting.Python.CreateRuntime(AppDomain.CurrentDomain);
-                ScriptScope scope = this.Python.CreateScope();
-                scope.SetVariable("this", this);
-                scope.SetVariable("Me", this);
+                
+                ScriptScope scope = this.Python.UseFile(fileName);
+                scope.SetVariable("plugin", this);
 
-                this.Script = this.Python.UseFile(fileName);
+                this.Script = scope;
             }
-            finally
+            catch(Exception)
             {
                 if (this.Python != null)
                     this.Python.Shutdown();
+
+                throw;
             }
         }
 
@@ -43,9 +43,10 @@ namespace SimplePlugins
                 {
                     return Convert.ToString(this.Script.FriendlyName());
                 }
-                finally
+                catch (Exception)
                 {
                     this.Python.Shutdown();
+                    throw;
                 }
             }
         }
@@ -58,9 +59,10 @@ namespace SimplePlugins
                 {
                     return (PluginBase.ExecutionModes)this.Script.ExecutionMode();
                 }
-                finally
+                catch (Exception)
                 {
                     this.Python.Shutdown();
+                    throw;
                 }
             }
         }
@@ -83,9 +85,10 @@ namespace SimplePlugins
             {
                 this.Script.OnAbort();
             }
-            finally
+            catch (Exception)
             {
                 this.Python.Shutdown();
+                throw;
             }
         }
     }

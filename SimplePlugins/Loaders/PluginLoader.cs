@@ -12,10 +12,12 @@ using SimplePlugins;
 using SimplePlugins.Loaders;
 
 namespace SimplePlugins.Loaders
-{
+{    
     [Serializable]
     public class PluginLoader : PluginLoaderBase
     {
+        protected const string  PYTHON_PROXY_PLUGIN_FILE_NAME = "SimplePlugins.IronPython.dll";
+
         Assembly _loadedPluginAssembly;
 
         public PluginLoader()
@@ -24,9 +26,19 @@ namespace SimplePlugins.Loaders
 
         }
 
-        protected override PluginInfo OnGetInfo(string assemblyFileName)
+        protected override PluginInfo OnGetInfo(string pluginFileName)
         {
-            AssemblyName assName = AssemblyName.GetAssemblyName(assemblyFileName);
+            PluginInfo.PluginTypes pluginType = PluginInfo.DeterminePluginType(pluginFileName);
+
+            AssemblyName assName = null;
+            if (pluginType == PluginInfo.PluginTypes.PythonScript)
+            {
+                string pythonProxyPluginPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                pythonProxyPluginPath = Path.Combine(pythonProxyPluginPath, PluginLoader.PYTHON_PROXY_PLUGIN_FILE_NAME);
+                assName = AssemblyName.GetAssemblyName(pythonProxyPluginPath);
+            }
+            else
+                assName = AssemblyName.GetAssemblyName(pluginFileName);
 
             _loadedPluginAssembly = AppDomain.CurrentDomain.Load(assName);
 
@@ -37,14 +49,16 @@ namespace SimplePlugins.Loaders
             {
                 if (t.IsSubclassOf(pluginBaseType))
                 {
-                    PluginBase pi = (PluginBase)Activator.CreateInstance(t);
+                    PluginBase pi = null;
+                    pi = (PluginBase)Activator.CreateInstance(t, pluginFileName);
+                    
                     PluginInfo info = new PluginInfo(pi);
                     return info;
                 }
             }
 
             return null;
-        }
+        }        
 
         protected override PluginInfoList OnProbe(string pluginFolderPath, SearchOption scanDeapth)
         {
@@ -52,40 +66,47 @@ namespace SimplePlugins.Loaders
 
             string[] exes = Directory.GetFiles(pluginFolderPath, "*.exe", scanDeapth);
             string[] dlls = Directory.GetFiles(pluginFolderPath, "*.dll", scanDeapth);
+            string[] pys = Directory.GetFiles(pluginFolderPath, "*.py", scanDeapth);
 
             List<string> files = new List<string>();
             files.AddRange(exes);
             files.AddRange(dlls);
+            files.AddRange(pys);
 
             foreach (string file in files)
             {
-                PluginInfo info = this.OnGetInfo(file);
-                if (info != null)
-                    list.Add(info);
+                try
+                {
+                    PluginInfo info = this.OnGetInfo(file);
+
+                    if (info != null)
+                        list.Add(info);
+                }
+                catch (Exception ex) { }
             }
 
             return list;
         }
 
-        protected override PluginInfo OnLoad(string assemblyFileName)
+        protected override PluginInfo OnLoad(string pluginFileName)
         {
-            if (File.Exists(assemblyFileName))
+            if (File.Exists(pluginFileName))
             {
                 AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(CurrentDomain_AssemblyResolve);
 
-                PluginInfo info = this.OnGetInfo(assemblyFileName);
+                PluginInfo info = this.OnGetInfo(pluginFileName);
 
                 if (info == null)
-                    throw new InvalidPluginAssemblyException(assemblyFileName);
+                    throw new InvalidPluginFileException(pluginFileName);
                 else
                 {
-                    this.LoadedPlugin = (PluginBase)Activator.CreateInstance(_loadedPluginAssembly.GetType(info.PluginTypeName));
+                    this.LoadedPlugin = (PluginBase)Activator.CreateInstance(_loadedPluginAssembly.GetType(info.PluginTypeName), pluginFileName);
                     
                     return info;
                 }
             }
             else
-                throw new FileNotFoundException("Specified assembly file '" + assemblyFileName + "' does not exist.", assemblyFileName);
+                throw new FileNotFoundException("Specified assembly file '" + pluginFileName + "' does not exist.", pluginFileName);
         }
 
         protected override PluginParameters OnExecute(PluginParameters args)

@@ -77,7 +77,7 @@ namespace SamplePluggableApp
             //You may make changes to the domain setup used to load the current plugin here i.e e.DomainSetup.ApplicationName, e.DomainSetup.CachePath, etc. 
             //Or you can cancel the loading by setting e.Cancel = true
 
-            Console.WriteInfo("Loading plugin from file '" + e.AssemblyFileName + "'...");
+            Console.WriteInfo("Loading plugin from file '" + e.PluginFileName + "'...");
         }
 
         void PluginLoader_PluginLoaded(object sender, PluginLoaderBase.PluginLoadedEventArgs e)
@@ -169,7 +169,7 @@ namespace SamplePluggableApp
                     args.Add("Param3", 7.321);
 
                     //Tell the plugin loader to load and execute the plugin
-                    this.PluginLoader.Load(template.FileName, args);
+                    this.PluginLoader.Load(template.PluginFileName, args);
                 }
                 catch (PluginException ex)
                 {

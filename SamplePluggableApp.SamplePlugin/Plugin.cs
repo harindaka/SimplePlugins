@@ -15,6 +15,12 @@ namespace SamplePluggableApp.SamplePlugin
         internal DateTime Param2 { get; private set; }
         internal double Param3 { get; private set; }
 
+        public Plugin(string pluginFileName)
+            : base(pluginFileName)
+        {
+
+        }
+
         public override string FriendlyName
         {
             //The friendly name of the plugin. This will be used by default in PluginInfo.ToString()

@@ -75,7 +75,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Exceptions\PluginThreadException.cs" />
-    <Compile Include="Exceptions\InvalidPluginAssemblyException.cs" />
+    <Compile Include="Exceptions\InvalidPluginFileException.cs" />
     <Compile Include="Loaders\PluginLoader.cs" />
     <Compile Include="Exceptions\NonserializableParameterException.cs" />
     <Compile Include="Exceptions\PluginException.cs" />

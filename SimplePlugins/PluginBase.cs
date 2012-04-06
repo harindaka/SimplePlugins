@@ -33,11 +33,15 @@ namespace SimplePlugins
 
         public enum ExecutionModes { Singleton, MultiInstance, Exclusive, Custom };
 
-        public PluginBase()
+        public PluginBase(string pluginFileName)
         {
             PluginBase.Current = this;
             this.ManagedThreads = new ReadOnlyDictionary<string, ManagedThread>();
+
+            this.PluginFileName = pluginFileName;
         }
+
+        public virtual string PluginFileName { get; private set; }
 
         public Exception UnhandledException { get; internal set; }
 

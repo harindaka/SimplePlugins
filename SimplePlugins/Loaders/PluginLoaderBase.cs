@@ -35,15 +35,15 @@ namespace SimplePlugins.Loaders
         [Serializable]
         public class PluginLoadingEventArgs : EventArgs
         {
-            public PluginLoadingEventArgs(string assemblyFileName, AppDomainSetup domainSetup)
+            public PluginLoadingEventArgs(string pluginFileName, AppDomainSetup domainSetup)
                 : base()
             {
-                this.AssemblyFileName = assemblyFileName;
+                this.PluginFileName = pluginFileName;
                 this.DomainSetup = domainSetup;
                 this.Cancel = false;
             }
 
-            public string AssemblyFileName
+            public string PluginFileName
             {
                 get;
                 private set;
@@ -146,8 +146,8 @@ namespace SimplePlugins.Loaders
         private PluginInfoList _currentInfoList;
 
         protected abstract PluginInfoList OnProbe(string pluginFolderPath, SearchOption scanDeapth);
-        protected abstract PluginInfo OnGetInfo(string assemblyFileName);
-        protected abstract PluginInfo OnLoad(string assemblyFileName);
+        protected abstract PluginInfo OnGetInfo(string pluginFileName);
+        protected abstract PluginInfo OnLoad(string pluginFileName);
         protected abstract PluginParameters OnExecute(PluginParameters args);
         protected abstract void OnAbort();
 
@@ -268,24 +268,24 @@ namespace SimplePlugins.Loaders
             }
         }
 
-        public virtual PluginInfo GetInfo(string assemblyFileName)
+        public virtual PluginInfo GetInfo(string pluginFileName)
         {
             AppDomain domain = null;
 
             domain = AppDomain.CreateDomain("PluginLoaderBase.Probe");
             Type t = this.GetType();
             PluginLoaderBase loader = (PluginLoaderBase)domain.CreateInstanceFromAndUnwrap(t.Assembly.Location, t.FullName);
-            PluginInfo info = loader.OnGetInfoWrapper(assemblyFileName);
+            PluginInfo info = loader.OnGetInfoWrapper(pluginFileName);
 
             AppDomain.Unload(domain);
 
             return info;
         }
-        protected PluginInfo OnGetInfoWrapper(string assemblyFileName)
+        protected PluginInfo OnGetInfoWrapper(string pluginFileName)
         {
             try
             {
-                return this.OnGetInfo(assemblyFileName);
+                return this.OnGetInfo(pluginFileName);
             }
             catch (ThreadAbortException ex) { throw ex; }
             catch (Exception ex)
@@ -294,7 +294,7 @@ namespace SimplePlugins.Loaders
             }
         }
 
-        public virtual void Load(string assemblyFileName, PluginParameters args)
+        public virtual void Load(string pluginFileName, PluginParameters args)
         {
             if (args == null)
                 args = new PluginParameters();
@@ -314,17 +314,17 @@ namespace SimplePlugins.Loaders
             else
                 domainSetup.ApplicationName = productName;
 
-            domainSetup.ConfigurationFile = Path.GetFileName(assemblyFileName) + ".config";
-            domainSetup.ApplicationBase = Path.GetDirectoryName(assemblyFileName);
+            domainSetup.ConfigurationFile = Path.GetFileName(pluginFileName) + ".config";
+            domainSetup.ApplicationBase = Path.GetDirectoryName(pluginFileName);
             domainSetup.PrivateBinPath = "bin";
 
             if (this.ShadowCopyEnabled)
             {
                 domainSetup.ShadowCopyFiles = "true";
-                domainSetup.ShadowCopyDirectories = Path.GetDirectoryName(assemblyFileName) + ";" + Path.Combine(Path.GetDirectoryName(assemblyFileName), "bin");
+                domainSetup.ShadowCopyDirectories = domainSetup.ApplicationBase + ";" + Path.Combine(domainSetup.ApplicationBase, "bin");
             }
 
-            PluginLoadingEventArgs loadingArgs = new PluginLoadingEventArgs(assemblyFileName, domainSetup);
+            PluginLoadingEventArgs loadingArgs = new PluginLoadingEventArgs(pluginFileName, domainSetup);
             this.OnPluginLoading(loadingArgs);
 
             if (!loadingArgs.Cancel)
@@ -336,7 +336,7 @@ namespace SimplePlugins.Loaders
                 PluginLoaderBase loader = (PluginLoaderBase)domain.CreateInstanceFromAndUnwrap(t.Assembly.Location, t.FullName);
 
                 loader.AssemblyResolutionPaths = this.AssemblyResolutionPaths;
-                PluginInfo info = loader.OnLoadWrapper(assemblyFileName);
+                PluginInfo info = loader.OnLoadWrapper(pluginFileName);
 
                 if (info == null)
                     AppDomain.Unload(domain);
@@ -364,7 +364,7 @@ namespace SimplePlugins.Loaders
                         }
                         else if (execMode == PluginBase.ExecutionModes.Singleton)
                         {
-                            if (this.GetLoadedInstances(info.FileName).Count == 1)
+                            if (this.GetLoadedInstances(info.PluginFileName).Count == 1)
                                 canExecute = true;
                         }
                         else if (execMode == PluginBase.ExecutionModes.Custom)
@@ -395,11 +395,11 @@ namespace SimplePlugins.Loaders
                 }
             }
         }
-        protected PluginInfo OnLoadWrapper(string assemblyFileName)
+        protected PluginInfo OnLoadWrapper(string pluginFileName)
         {
             try
             {
-                return this.OnLoad(assemblyFileName);
+                return this.OnLoad(pluginFileName);
             }
             catch (ThreadAbortException ex) { throw ex; }
             catch (Exception ex)
@@ -488,13 +488,13 @@ namespace SimplePlugins.Loaders
             }
         }
 
-        public virtual PluginInfoList GetLoadedInstances(string assemblyFileName)
+        public virtual PluginInfoList GetLoadedInstances(string pluginFileName)
         {
             PluginInfoList list = new PluginInfoList();
 
             for (int i = 0; i < this._currentInfoList.Count; i++)
             {
-                if (assemblyFileName.Equals(this._currentInfoList[i].FileName))
+                if (pluginFileName.Equals(this._currentInfoList[i].PluginFileName))
                     list.Add(this._currentInfoList[i]);
             }
 
