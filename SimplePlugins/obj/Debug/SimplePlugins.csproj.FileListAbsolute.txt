@@ -5,7 +5,6 @@ D:\Temp\Plugins\Plugins\obj\Debug\SimplePlugins.dll
 D:\Temp\Plugins\Plugins\obj\Debug\SimplePlugins.pdb
 D:\Temp\SimplePlugins\SimplePlugins\bin\Debug\SimplePlugins.dll
 D:\Temp\SimplePlugins\SimplePlugins\bin\Debug\SimplePlugins.pdb
-D:\Temp\SimplePlugins\SimplePlugins\obj\Debug\ResolveAssemblyReference.cache
 D:\Temp\SimplePlugins\SimplePlugins\obj\Debug\SimplePlugins.dll
 D:\Temp\SimplePlugins\SimplePlugins\obj\Debug\SimplePlugins.pdb
 G:\Harindaka\Temp\SimplePlugins\SimplePlugins\SimplePlugins\bin\Debug\SimplePlugins.dll
@@ -18,3 +17,4 @@ D:\Temp\SimplePlugins\SimplePlugins\SimplePlugins\bin\Debug\SimplePlugins.dll
 D:\Temp\SimplePlugins\SimplePlugins\SimplePlugins\bin\Debug\SimplePlugins.pdb
 D:\Temp\SimplePlugins\SimplePlugins\SimplePlugins\obj\Debug\SimplePlugins.dll
 D:\Temp\SimplePlugins\SimplePlugins\SimplePlugins\obj\Debug\SimplePlugins.pdb
+D:\Temp\SimplePlugins\SimplePlugins\obj\Debug\SimplePlugins.csprojResolveAssemblyReference.cache

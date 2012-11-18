@@ -24,12 +24,9 @@ D:\Temp\SimplePlugins\SamplePluggableApp\obj\Debug\SamplePluggableApp.exe
 D:\Temp\SimplePlugins\SamplePluggableApp\obj\Debug\SamplePluggableApp.pdb
 D:\Temp\SimplePlugins\Bin\SamplePluggableApp.exe
 D:\Temp\SimplePlugins\Bin\SamplePluggableApp.pdb
-D:\Temp\SimplePlugins\SamplePluggableApp\obj\Debug\ResolveAssemblyReference.cache
 D:\Temp\SimplePlugins\SamplePluggableApp\obj\Debug\SamplePluggableApp.Console.resources
 D:\Temp\SimplePlugins\SamplePluggableApp\obj\Debug\SamplePluggableApp.MainView.resources
 D:\Temp\SimplePlugins\SamplePluggableApp\obj\Debug\SamplePluggableApp.Properties.Resources.resources
-D:\Temp\SimplePlugins\SamplePluggableApp\obj\Debug\GenerateResource.read.1.tlog
-D:\Temp\SimplePlugins\SamplePluggableApp\obj\Debug\GenerateResource.write.1.tlog
 G:\Harindaka\Temp\SimplePlugins\SimplePlugins\SamplePluggableApp\obj\Debug\SamplePluggableApp.exe
 G:\Harindaka\Temp\SimplePlugins\SimplePlugins\SamplePluggableApp\obj\Debug\SamplePluggableApp.pdb
 G:\Harindaka\Temp\SimplePlugins\SimplePlugins\Bin\SamplePluggableApp.exe
@@ -50,3 +47,6 @@ D:\Temp\SimplePlugins\SimplePlugins\SamplePluggableApp\obj\Debug\GenerateResourc
 D:\Temp\SimplePlugins\SimplePlugins\SamplePluggableApp\obj\Debug\GenerateResource.write.1.tlog
 D:\Temp\SimplePlugins\SimplePlugins\Bin\SamplePluggableApp.exe
 D:\Temp\SimplePlugins\SimplePlugins\Bin\SamplePluggableApp.pdb
+D:\Temp\SimplePlugins\SamplePluggableApp\obj\Debug\SamplePluggableApp.csprojResolveAssemblyReference.cache
+D:\Temp\SimplePlugins\SamplePluggableApp\obj\Debug\SamplePluggableApp.csproj.GenerateResource.Cache
+D:\Temp\SimplePlugins\Bin\SamplePluggableApp.exe.config

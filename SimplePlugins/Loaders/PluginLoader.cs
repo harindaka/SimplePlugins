@@ -82,7 +82,7 @@ namespace SimplePlugins.Loaders
                     if (info != null)
                         list.Add(info);
                 }
-                catch (Exception ex) { }
+                catch (Exception) { }
             }
 
             return list;
